@@ -10,7 +10,7 @@ pipeline {
             steps {
                 checkout scm
                 echo "code checked out from github successfully."
-            
+            }
         }
         
         stage('Cleanup Old Containers') {
@@ -40,7 +40,7 @@ pipeline {
                   def response = sh(script: "curl -s http://localhost:8000/test-db", returnStdout: true).trim()
                   echo "DB Test Response : ${response}"
                   if (!response.contains("Connected")) {
-                     error "PostgrlSQL Health Check Failed!" 
+                     error "PostgreSQL Health Check Failed!" 
                   }
 
                   def redisResponse = sh(script: "curl -s http://localhost:8000/test-redis", returnStdout: true).trim()
