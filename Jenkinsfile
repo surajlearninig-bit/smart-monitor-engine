@@ -25,7 +25,7 @@ pipeline {
                 script {
                     def myTag = "v${env.BUILD_NUMBER}"
                     echo "Deploying version : ${myTag}"
-                    sh "APP_VERSION=${myTag} docker compose up -d --build'
+                    sh "APP_VERSION=${myTag} docker compose up -d --build"
                 }
            }
        }
