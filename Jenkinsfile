@@ -6,6 +6,13 @@ pipeline {
     }
 
     stages {
+        stage('checkout code') {
+            steps { 
+                checkout scm
+                echo "code checked out from github successfully."
+            }
+        }
+        
         stage('Cleanup Old Containers') {
            steps {
                echo 'Cleaning up previous deployment...'
