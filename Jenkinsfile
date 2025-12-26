@@ -51,10 +51,16 @@ pipeline {
     }
 
 post {
+    success {
+        echo 'deployment is stable and runnnig.'
+    }
+    failure {
+        echo 'health check failed! cleaning up broken deployment...'
+        sh 'docker compose down '
+    }
   always {
      echo 'pipeline finished. cleaninig up unused Docker images....'
-    
+       
     }
-   }
-
+  }
 }
