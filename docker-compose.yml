@@ -3,7 +3,7 @@ name: smart-monitor
 services:
   # 1. Backend Service
   backend:
-    image: smart-monitor-backend:{APP_VERSION:-latest}
+    image: smart-monitor-backend:{$APP_VERSION:-latest}
     build: ./backend
     container_name: monitor_backend
     ports:
@@ -33,5 +33,6 @@ services:
 
 volumes:
   postgres_data:
+
 
 
