@@ -53,7 +53,7 @@ post {
   always {
      echo 'pipeline finished. cleaninig up unused Docker images....'
      sh 'docker compose down'
-  }
- }
+    }
+   }
 
-
+}
