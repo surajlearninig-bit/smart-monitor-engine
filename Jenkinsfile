@@ -7,13 +7,10 @@ pipeline {
 
     stages {
         stage('checkout code') {
-            steps { 
-                script {
-                    def tag = env.BUILD_NUMBER
-                    echo "deploying version: v${tag}"
+            steps {
                 checkout scm
                 echo "code checked out from github successfully."
-            }
+            
         }
         
         stage('Cleanup Old Containers') {
@@ -25,8 +22,11 @@ pipeline {
 
         stage('build & run services') {
             steps { 
-              echo 'building and starting services ...'
-              sh 'docker compose up -d --build'
+                script {
+                    def myTag = "v${env.BUILD_NUMBER}"
+                    echo "Deploying version : ${myTag}"
+                    sh "APP_VERSION=${myTag} docker compose up -d --build'
+                }
            }
        }
      
