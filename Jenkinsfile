@@ -42,7 +42,7 @@ pipeline {
 
                   def redisResponse = sh(script: "curl -s http://localhost:8000/test-redis", returnStdout: true).trim()
                   echo "Redis Test Response: ${redisResponse}"
-                  if (!redisResponse.contains("connected")) {
+                  if (!redisResponse.contains("Connected")) {
                      error "Redis Health Check Failed!"
                   }
               }
