@@ -8,6 +8,9 @@ pipeline {
     stages {
         stage('checkout code') {
             steps { 
+                script {
+                    def tag = env.BUILD_NUMBER
+                    echo "deploying version: v${tag}"
                 checkout scm
                 echo "code checked out from github successfully."
             }
