@@ -17,7 +17,7 @@ services:
 
   # 2. PostgreSQL Database
   db:
-    image: postgres:15
+    image: postgres:15-alpine
     container_name: monitor_db
     environment:
       - POSTGRES_USER=user
@@ -28,9 +28,10 @@ services:
 
   # 3. Redis Cache
   redis:
-    image: redis:alpine
+    image: redis:7-alpine
     container_name: monitor_redis
 
 volumes:
   postgres_data:
+
 
