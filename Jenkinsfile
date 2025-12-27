@@ -12,6 +12,15 @@ pipeline {
                 echo "code checked out from github successfully."
             }
         }
+
+        stage('securty scan (Trivy)') {
+            steps { 
+                script {
+                    echo "scanning image for security vulnerability...."
+                    sh "trivy image --exit-code 1 --severity CRITICAL smart-monitor-backend:v${env.BUILD_NUMBER}"
+                }
+            }
+        }
         
         stage('Cleanup Old Containers') {
            steps {
