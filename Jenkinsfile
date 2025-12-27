@@ -35,7 +35,7 @@ pipeline {
                 script {
                     echo "scanning image for security vulnerability and genrating HTML report....."
                     def myTag = "v${env.BUILD_NUMBER}"
-                     sh "trivy image --format template --template '@/usr/local/share/trivy/templates/html.tpl' --output report.html smart-monitor-backend:${myTag}"
+                     sh "trivy image --format template --template '@contrib/html.tpl' --output report.html smart-monitor-backend:${myTag}"
                      sh "trivy image --exit-code 1 --severity CRITICAL smart-monitor-backend:${myTag}"
                    
                 }
