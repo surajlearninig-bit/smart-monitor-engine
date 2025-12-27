@@ -18,6 +18,7 @@ pipeline {
                 script {
                     echo "scanning image for security vulnerability...."
                     sh "trivy image --exit-code 1 --severity CRITICAL smart-monitor-backend:v${env.BUILD_NUMBER}"
+                    sh "trivy image --format json --output report.json smart-monitor-backend:v${env.BUILD_NUMBER}"
                 }
             }
         }
