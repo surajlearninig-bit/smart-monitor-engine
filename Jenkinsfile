@@ -35,7 +35,7 @@ pipeline {
                 script {
                     echo "scanning image for security vulnerability and genrating HTML report....."
                     def myTag = "v${env.BUILD_NUMBER}"
-                     sh "trivy image --format template --template '@contrib/html.tpl' --output report.html smart-monitor-backend:${myTag}"
+                     sh "trivy image --format template --template '@./trivy-templates/html.tpl' --output report.html smart-monitor-backend:${myTag}"
                      sh "trivy image --exit-code 1 --severity CRITICAL smart-monitor-backend:${myTag}"
                    
                 }
@@ -77,7 +77,7 @@ pipeline {
 post {
     always {
      echo 'pipeline finished. cleaninig up unused Docker images....'
-     archiveArtifacts artifacts:'report.html', fingerprint: true
+     archiveArtifacts artifacts:'report.html', allowEmptyArchive: true
     }
     success {
         echo 'deployment is stable and runnnig.'
