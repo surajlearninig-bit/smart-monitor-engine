@@ -1,0 +1,13 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  # Scrape Prometheus metrics
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Scrape container metrics from cadvisor
+  - job_name: 'containers'
+    static_configs:
+      - targets: ['cadvisor:3030']
