@@ -10,4 +10,4 @@ scrape_configs:
   # Scrape container metrics from cadvisor
   - job_name: 'containers'
     static_configs:
-      - targets: ['cadvisor:3030']
+      - targets: ['cadvisor:8080']
