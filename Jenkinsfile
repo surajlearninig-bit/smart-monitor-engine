@@ -12,6 +12,17 @@ pipeline {
                 echo "code checked out from github successfully."
             }
         }
+        stage('fix permissions') {
+            steps {
+                script {
+                    sh 'mkdir -p grafana-data prometheus-data'
+                    sh 'sudo chown -R 472:472 grafana-data'
+                    sh 'sudo chmod -R 777 grafana-data'
+                    sh 'sudo chown -R 65534:65534 prometheus-data'
+                    sh 'sudo chmod -R 777 prometheus-data'
+                }
+            }
+        }
 
       
         stage('Cleanup Old Containers') {
