@@ -20,7 +20,17 @@ pipeline {
                sh 'docker compose down --remove-orphans'
            }
        }
-          stage('securty scan (Trivy)') {
+          
+        stage('build images') {
+            steps { 
+                script {
+                    def myTag = "v${env.BUILD_NUMBER}"
+                    sh "APP_VERSION=${myTag} docker compose build"
+                   }
+               }
+            }
+            
+           stage('securty scan (Trivy)') {
             steps { 
                 script {
                     echo "scanning image for security vulnerability and genrating HTML report....."
@@ -32,16 +42,14 @@ pipeline {
             }
         }
         
-
-        stage('build & run services') {
-            steps { 
-                script {
-                    def myTag = "v${env.BUILD_NUMBER}"
-                    echo "Deploying version : ${myTag}"
-                    sh "APP_VERSION=${myTag} docker compose up -d --build"
-                }
-           }
-       }
+        stage('deploy / run service')  {
+           steps {
+             script {
+                     def myTag = "v${env.BUILD_NUMBER}"
+                     sh "APP_VERSION=${myTag} docker compose up -d "
+                     }
+                  }
+        }
      
         stage('health check & integration test') {
           steps {
