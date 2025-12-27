@@ -13,22 +13,25 @@ pipeline {
             }
         }
 
-        stage('securty scan (Trivy)') {
-            steps { 
-                script {
-                    echo "scanning image for security vulnerability...."
-                    sh "trivy image --exit-code 1 --severity CRITICAL smart-monitor-backend:v${env.BUILD_NUMBER}"
-                    sh "trivy image --format json --output report.json smart-monitor-backend:v${env.BUILD_NUMBER}"
-                }
-            }
-        }
-        
+      
         stage('Cleanup Old Containers') {
            steps {
                echo 'Cleaning up previous deployment...'
                sh 'docker compose down --remove-orphans'
            }
        }
+          stage('securty scan (Trivy)') {
+            steps { 
+                script {
+                    echo "scanning image for security vulnerability and genrating HTML report....."
+                    def myTag = "v${env.BUILD_NUMBER}"
+                     sh "trivy image --format template --template '@/usr/local/share/trivy/templates/html.tpl' --output report.html smart-monitor-backend:${myTag}"
+                     sh "trivy image --exit-code 1 --severity CRITICAL smart-monitor-backend:${myTag}"
+                   
+                }
+            }
+        }
+        
 
         stage('build & run services') {
             steps { 
@@ -64,6 +67,10 @@ pipeline {
     }
 
 post {
+    always {
+     echo 'pipeline finished. cleaninig up unused Docker images....'
+     archiveArtifacts artifacts:'report.html', fingerprint: true
+    }
     success {
         echo 'deployment is stable and runnnig.'
     }
@@ -71,9 +78,7 @@ post {
         echo 'health check failed! cleaning up broken deployment...'
         sh 'docker compose down '
     }
-  always {
-     echo 'pipeline finished. cleaninig up unused Docker images....'
+ 
        
     }
   }
-}
